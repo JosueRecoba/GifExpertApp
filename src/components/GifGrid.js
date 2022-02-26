@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
+import { getGifs } from "../helpers/getGifs";
 import { GifGridItem } from "./GifGridItem";
 
 export const GifGrid = ({categorias})=> {
@@ -6,27 +7,11 @@ export const GifGrid = ({categorias})=> {
      const [images, setImages] = useState([]);
 
      useEffect( () =>{
-         getGifs();
-     }, [])
+         getGifs(categorias)
+         .then(setImages); 
+     }, [categorias])
 
-    const getGifs = async() => {
-
-
-        const url = 'api.giphy.com/v1/gifs/search?limit=10&q=Ric+and+morty&api_key=u99Yw3uHBGP2iRVl4vqvS3x8ER8PtzU5'
-        const resp = await fetch( url );
-        const { data } = await resp.json();
-
-        const gifs = data.map( img =>{
-            return {
-                id: img.id,
-                title: img.title,
-                url: img.images?.downsized_medium.url
-            }
-        })
-
-        console.log (gifs);
-        setImages( gifs); 
-    }
+    
 
     
 
